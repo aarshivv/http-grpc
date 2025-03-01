@@ -9,11 +9,11 @@ function App() {
     const [response, setResponse] = useState("");
 
     const callGRPC = () => {
-        const client = new TaskServiceClient("https://localhost", null,  null);
+        const client = new TaskServiceClient("https://test.example.com", null,  null);
 
         const request = new TaskRequest();
 
-        request.setTaskType("example_task");
+        request.setTaskType("some_value");
         request.setMessage("This is a test task");
     
         // Adding attributes

@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package taskservice;
+
+// The service definition
+service TaskService {
+  // A simple RPC method
+  rpc ProcessTask (TaskRequest) returns (TaskResponse);
+}
+
+// The request message
+message TaskRequest {
+  string task_type = 1;
+  string message = 2;
+  map<string, string> attributes = 3; // Key-value pairs for extra data
+}
+
+// The response message
+message TaskResponse {
+  bool is_success = 1;
+  string message = 2;
+}

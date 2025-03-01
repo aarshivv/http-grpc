@@ -16,7 +16,7 @@ spec:
       automountServiceAccountToken: true
       containers:
       - name: sample-grpc-server
-        image: test-grpc:v1.0.1
+        image: test-grpc:v1.0.0
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 6000
