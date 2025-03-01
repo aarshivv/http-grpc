@@ -1,0 +1,20 @@
+[package]
+name = "sample-grpc"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+tokio = { version = "1.41", features = ["macros", "rt-multi-thread", "fs", "tracing"] }
+tonic = "0.12.3"
+
+# utilites
+serde_json = { version = "1.0.95" }
+serde = { version = "1.0", features = ["derive"] }
+chrono = "0.4.39"
+
+# proto build
+prost = "0.13.4"
+tonic-reflection = "0.12.3"
+
+[build-dependencies]
+tonic-build = "0.12.3"

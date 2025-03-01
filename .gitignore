@@ -1,0 +1,64 @@
+# Node.js dependencies
+client/node_modules/
+client/.parcel-cache/
+client/.next/
+client/dist/
+client/build/
+
+# Logs
+**/*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Build files and caches
+server/target/
+server/debug/
+server/release/
+server/*.d
+server/*.o
+server/*.so
+server/*.a
+
+# Rust build artifacts
+Cargo.lock
+target/
+**/*.rs.bk
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*.swn
+
+# Rust temporary files
+*.rlib
+*.rmeta
+
+# gRPC generated files
+proto/*.pb.go
+proto/*.pb.rs
+proto/*.pb.cc
+proto/*.pb.h
+proto/*.pb.py
+proto/*.pb.ts
+proto/*.pb.d.ts
+proto/*_grpc.*
+
+# Docker files
+docker-compose.override.yml
+.envrc
+.envrc.local
+
+# Kubernetes & Envoy Configurations (if dynamically generated)
+*.yaml~
+*.yml~
+.env.yaml

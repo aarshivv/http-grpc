@@ -1,0 +1,112 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sample-grpc-server
+  namespace: test-grpc
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sample-grpc-server
+  template:
+    metadata:
+      labels:
+        app: sample-grpc-server
+    spec:
+      automountServiceAccountToken: true
+      containers:
+      - name: sample-grpc-server
+        image: test-grpc:v1.0.1
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 6000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sample-grpc-service
+  namespace: test-grpc
+  labels: 
+    app: sample-grpc-service
+spec:
+  selector:
+    app: sample-grpc-server
+  ports:
+  - name: grpc
+    port: 6000
+    targetPort: 6000
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: sample-grpc-vs
+  namespace: test-grpc
+spec:
+  gateways:
+    - istio-system/istiogateway
+  hosts:
+    - "*"
+  http:
+    - match:
+        - uri:
+            prefix: /policy
+      route:
+        - destination:
+            host: sample-grpc-service
+            port:
+              number: 6000
+      corsPolicy:
+        allowOrigin:
+          - "*"
+        allowMethods:
+          - POST
+          - GET
+          - OPTIONS
+          - PUT
+          - DELETE
+        allowHeaders:
+          - grpc-timeout
+          - content-type
+          - authorization
+          - keep-alive
+          - user-agent
+          - cache-control
+          - content-type
+          - content-transfer-encoding
+          - custom-header-1
+          - x-accept-content-transfer-encoding
+          - x-accept-response-streaming
+          - x-user-agent
+          - x-grpc-web
+          - grpc-accept-encoding
+        maxAge: 1728s
+        exposeHeaders:
+          - custom-header-1
+          - grpc-status
+          - grpc-message
+        allowCredentials: true
+---
+apiVersion: networking.istio.io/v1beta1
+kind: Gateway
+metadata:
+  name: istiogateway
+  namespace: istio-system
+spec:
+  selector:
+    istio: ingressgateway  # Applies to the Istio Ingress Gateway
+  servers:
+    - port:
+        number: 80
+        name: http2
+        protocol: http2
+      hosts:
+        - "*"
+    - port:
+        number: 443
+        name: https
+        protocol: HTTPS
+      hosts:
+        - "*"
+      tls:
+        mode: SIMPLE
+        credentialName: grpc-web-tls-secret
